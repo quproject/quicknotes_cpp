@@ -1,5 +1,5 @@
-#ifndef FUTIl_H
-#define FUTIl_H
+#ifndef FUTIL_H
+#define FUTIL_H
 
 #include <filesystem>
 //#include <memory>
@@ -21,11 +21,10 @@ class Futil
 	std::vector<std::string> content_;
 
 	void get_file_content();
-	void set_file_content()
+	void set_file_content();
 
 	private:
 	fs::path file_;
-	//std::fstream filestream_;
 
 	bool file_exists();
 	bool is_file();
@@ -34,4 +33,4 @@ class Futil
 	void do_checks();
 };
 
-#endif // FUTIl_H
+#endif // FUTIL_H

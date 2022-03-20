@@ -53,13 +53,13 @@ bool Futil::is_writable()
 void Futil::do_checks()
 {
 
-	if (!file_exists)
+	if (!file_exists())
 	{
 		errormsg_ =  "\033[31mError:\033[0m The file " + std::string(file_) + " does not exist; check its path\n";
 		status_ = false;
 	}
 
-	if (!is_file)
+	if (!is_file())
 	{
 		errormsg_ = "\033[31mError:\033[0m The file " + std::string(file_) + " is not a regular file and can't be opened\n";
 		status_ = false;
