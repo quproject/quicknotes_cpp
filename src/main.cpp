@@ -9,17 +9,20 @@ using std::cout;
 
 const std::string app_name{"qn"};
 const std::string app_version{"0.2.0"};
-const std::string help_msg{R"(Usage: qn [OPTIONS]... [NAME]... [CATEGORY] [TERMS]...
+const std::string help_msg{R"(Usage: qn [OPTION]... [NAME]... [TERMS]... [FORMAT]
 
 Options:
-  -n, --new [NAME]...         Create a new note named NAME
-  -c, --category [CATEGORY]   Specify the note's category CATEGORY
-  -t, --template [TEMPLATE]   Specify a template TEMPLATE to use (default: memo.md)
-  -l, --list                  List notes and category ([a]ll, [n]otes, [c]ategory, [0-9] number)
-  -s, --search [TERMS]...     Search TERMS in notes
-  -p, --prefs                 Manage preferences
-  -h, --help                  Display this help message and exit
-  -v, --version               Display the current app version)"};
+  -n, --new [NAME]...                Create a new note named \033[4mNAME\033[0m
+  -r, --read [NAME]...               Read the note named \033[4mNAME\033[0m (if found)
+  -c, --category [NAME]              Specify the note's category \033[4mNAME\033[0m to associate with a new note or create a new category if used alone
+  -t, --template [NAME]              Specify a template \033[4mNAME\033[0m to use (default: memo.md)
+  -l, --list [a|n|c|t [0-9]*]        List notes and categories ([a]ll, [n]otes, [c]ategories, [t]ags, [0-9] number of items to show)
+  -s, --search [TERMS]...            Search \033[4mTERMS\033[0m in notes
+  -e, --export [FORMAT] [NAME]...    Export the note \033[4mNAME\033[0m to the format \033[4mFORMAT\033[0m
+  -m, --manage [n|c] [NAME]...       Edit [n]ote, [c]ategory \033[4mNAME\033[0m
+  -p, --prefs                        Display current settings of preferences
+  -h, --help                         Display this help message and exit
+  -v, --version                      Display the current app version)"};
 
 void print_help()
 {
@@ -31,7 +34,7 @@ void print_version()
 	cout << app_name << ' ' << app_version << '\n';
 }
 
-void interactive_mode()
+void print_prefs()
 {
 	cout << "Not yet implemented!\n";
 }
@@ -52,9 +55,9 @@ int main(int argc, char **argv)
 		{
 			print_version();
 		}
-		else if (std::string_view(argv[1]) == "-i" or std::string_view(argv[1]) == "--inter")
+		else if (std::string_view(argv[1]) == "-p" or std::string_view(argv[1]) == "--prefs")
 		{
-			interactive_mode();
+			print_prefs();
 		}
 		else
 		{
@@ -67,7 +70,7 @@ int main(int argc, char **argv)
 		const std::vector<std::string_view> arguments(argv + 1, argv + argc);
 		Args args(arguments);
 
-		if (!args.status_[1] and !args.status_[2])
+		if (!args.status_)
 		{
 			std::cerr << "\033[31mError:\033[0m Could not parse arguments... Do:  " << app_name << " --help to see how to form the query.\n";
 

@@ -3,6 +3,7 @@ bin/*
 build/
 tmp/*
 .vscode/
+*.bak
 
 # Prerequisites
 *.d
