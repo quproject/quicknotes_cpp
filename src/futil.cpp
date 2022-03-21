@@ -1,7 +1,7 @@
 #include "futil.h"
 
 Futil::Futil(const fs::path& file)
-	: status_(true), file_(file)
+	: status_(false), file_(file)
 {
 	do_checks();
 }
@@ -58,12 +58,16 @@ void Futil::do_checks()
 		errormsg_ =  "\033[31mError:\033[0m The file " + std::string(file_) + " does not exist; check its path\n";
 		status_ = false;
 	}
-
-	if (!is_file())
+	else if (!is_file())
 	{
 		errormsg_ = "\033[31mError:\033[0m The file " + std::string(file_) + " is not a regular file and can't be opened\n";
 		status_ = false;
 	}
+	else
+	{
+		status_ = true;
+	}
+
 }
 
 void Futil::get_file_content()

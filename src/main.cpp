@@ -20,7 +20,8 @@ Options:
   -t, --template [NAME]              Specify a template NAME to use (default: memo.md)
   -l, --list [a|n|c|t [0-9]*]        List notes and categories ([a]ll, [n]otes, [c]ategories, [t]ags, [0-9] number of items to show)
   -s, --search [TERMS]...            Search TERMS in notes
-  -e, --export [FORMAT] [NAME]...    Export the note NAME to the format FORMAT
+  -e, --editor [NAME]...             Specify the editor NAME to use instead of default
+  -E, --export [FORMAT] [NAME]...    Export the note NAME to the format FORMAT
   -m, --manage [n|c] [NAME]...       Edit [n]ote, [c]ategory NAME
   -p, --prefs                        Display current settings of preferences
   -h, --help                         Display this help message and exit
@@ -99,7 +100,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			std::cerr << "\033[33mWarning:\033[0m Could not load preferences\n.";
+			std::cerr << "\033[33mWarning:\033[0m Could not parse preferences, falling back to defaults\n.";
 		}
 
 		const std::vector<std::string_view> arguments(argv + 1, argv + argc);
@@ -107,7 +108,7 @@ int main(int argc, char **argv)
 
 		if (!args.status_)
 		{
-			std::cerr << "\033[31mError:\033[0m Could not parse arguments... Do:  " << app_name << " --help to see how to form the query.\n";
+			std::cerr << "\033[31mError:\033[0m Could not parse arguments... Do:  " << app_name << " --help to see how to form the query. You may want to check the following file:\n" << conf_path << '\n';
 
 			return 1;
 		}
