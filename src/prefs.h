@@ -4,21 +4,20 @@
 #include "futil.h"
 #include <map>
 #include <regex>
-#include <iostream>
 
 class Prefs
 {
 	public:
 	Prefs() = delete;
-	Prefs(const std::filesystem::path& conffile);
+	Prefs(const std::vector<std::string>& raw_settings);
 	~Prefs() = default;
 
 	std::map<std::string, std::string> config_;
 
 	private:
-	fs::path conffile_;
+	//std::vector<std::string>& settings_;
 
-	void load_prefs();
+	void load_prefs(const std::vector<std::string>& settings);
 	void parse_prefs(const std::string& line);
 
 };

@@ -42,4 +42,6 @@ void Args::parse_args()
 			continue;
 		}
 	}
+
+	status_ = true;
 }

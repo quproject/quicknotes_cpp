@@ -1,7 +1,7 @@
 #include "futil.h"
 
 Futil::Futil(const fs::path& file)
-	: status_(false), file_(file)
+	: status_(true), file_(file)
 {
 	do_checks();
 }

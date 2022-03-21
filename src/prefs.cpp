@@ -1,28 +1,17 @@
 #include "prefs.h"
 
-Prefs::Prefs(const std::filesystem::path& conffile)
-	: config_{}, conffile_(conffile)
+Prefs::Prefs(const std::vector<std::string>& raw_settings)
+	: config_{}
 {
-	load_prefs();
+	load_prefs(raw_settings);
 }
 
-void Prefs::load_prefs()
+void Prefs::load_prefs(const std::vector<std::string>& settings)
 {
-	Futil settings(conffile_);
-
-	if (settings.status_)
+	for (const auto& e: settings)
 	{
-		settings.get_file_content();
-		if (settings.status_)
-		{
-			for (const auto& e: settings.content_)
-			{
-				parse_prefs(e);
-			}
-		}
+		parse_prefs(e);
 	}
-
-	std::cout << settings.errormsg_ << '\n';
 }
 
 void Prefs::parse_prefs(const std::string& line)

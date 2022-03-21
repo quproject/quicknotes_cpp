@@ -1,5 +1,5 @@
 #include "args.h"
-//#include "futil.h"
+#include "futil.h"
 #include "prefs.h"
 #include <filesystem>
 #include <iostream>
@@ -71,7 +71,24 @@ int main(int argc, char **argv)
 	else
 	{
 		const std::filesystem::path conf_path{"/home/stephane/Dev/CPP/PROJETS/QuickNotes_CPP-0.2.0/data/prefs.conf"};
-		Prefs prefs(conf_path);
+
+		Futil futil(conf_path);
+
+		if (!futil.status_)
+		{
+			cout << futil.errormsg_;
+			return 1;
+		}
+
+		futil.get_file_content();
+
+		if (!futil.status_)
+		{
+			cout << futil.errormsg_;
+			return 1;
+		}
+
+		Prefs prefs(futil.content_);
 
 		if (prefs.config_.size() > 0)
 		{
@@ -80,8 +97,12 @@ int main(int argc, char **argv)
 				cout << "key:\t" << key << "\nVal:\t" << val << "\n";
 			}
 		}
+		else
+		{
+			std::cerr << "\033[33mWarning:\033[0m Could not load preferences\n.";
+		}
 
-		/* const std::vector<std::string_view> arguments(argv + 1, argv + argc);
+		const std::vector<std::string_view> arguments(argv + 1, argv + argc);
 		Args args(arguments);
 
 		if (!args.status_)
@@ -89,7 +110,7 @@ int main(int argc, char **argv)
 			std::cerr << "\033[31mError:\033[0m Could not parse arguments... Do:  " << app_name << " --help to see how to form the query.\n";
 
 			return 1;
-		} */
+		}
 	}
 
 	return 0;
