@@ -1,7 +1,7 @@
 # Basic vars & flags
 CXX=clang++
 CXXFLAGS=-std=c++20 -g -O0 -W -Wall -Werror -Wextra -Wshadow -pthread -Wno-sign-compare -Wconversion -Wno-unused-function -Wpedantic -pedantic -pedantic-errors
-LDFLAGS=
+LDFLAGS=-l ncurses
 
 # Directories & other
 BINNAME=quicknotes
