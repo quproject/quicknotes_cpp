@@ -1,103 +1,84 @@
 #include "editor.h"
 
-Editor::Editor()
-	: edstatus_(false),
-	  note_{},
-	  cursor_{0, 0},
-	  textarea_{0, 0},
-	  footer_{}
-{}
-
-Editor::Editor(const Note& note)
-	: edstatus_(false),
-	  note_(note),
-	  cursor_{0, 0},
-	  textarea_{0, 0},
-	  footer_{}
-{}
-
-~Editor()
+Editor::Editor():
+	file_("untitled"), content_{},
+	note_(std::make_shared<Note>())
 {
-	if (edstatus_)
-	{
-		endwin();
-	}
+	edinit();
+}
+
+Editor::Editor(const std::string& file):
+	file_(file), content_{},
+	note_(std::make_shared<Note>(fs::path(file)))
+{
+	edinit();
+}
+
+Editor::Editor(std::shared_ptr<Note> note):
+	file_(file), content_{}, note_(note)
+{
+	edinit();
+}
+
+Editor::~Editor()
+{
+	endwin();
 }
 
 void Editor::edinit()
 {
 	initscr();
-	noecho();
-	cbreak();
+	//noecho();
+	//cbreak();
 	keypad(stdscr, true);
 
-	textarea_.update(LINES - 2, COLS);
-
-	edstatus_ = true;
-	update_footer();
-	edloop();
+	main_loop();
 }
 
-void fresh()
+void Editor::main_loop()
 {
-	refresh();
-}
+	int ch;
 
-void Editor::update_footer()
-{
-    attron(A_REVERSE);
-    mvprintw(LINES - 1, 0, footer_.c_str());
-    clrtoeol();
-    attroff(A_REVERSE);
-}
-
-void Editor::edloop()
-{
-	int current_char;
-	bool app_exit{false};
-
-	move(cursor_.posy, cursor_.posx);
-
-    while(current_char = getch())
-	{
-		if (app_exit)
+	do {
+		ch = getch();
+		switch (ch)
 		{
-			break;
-		}
-
-		switch(current_char)
-		{
-			case 27:           // Escape key, exit the app
-				app_exit = true;
-				break;
-			case KEY_F(1):     // Saving the file
-				break;
-			case KEY_F(2):     // Showing the help
-				break;
 			case KEY_DOWN:
+				addstr("Key down arrow\n");
 				break;
 			case KEY_UP:
+				addstr("Key up arrow\n");
 				break;
 			case KEY_LEFT:
+				addstr("Key left arrow\n");
 				break;
 			case KEY_RIGHT:
+				addstr("Key right arrow\n");
 				break;
-			case 127:
+			case KEY_NPAGE:
+				addstr("Key page down\n");
+				break;
+			case KEY_PPAGE:
+				addstr("Key page up\n");
+				break;
+			case KEY_HOME:
+				addstr("Key home\n");
+				break;
+			case KEY_END:
+				addstr("Key to end\n");
+				break;
 			case KEY_BACKSPACE:
+				addstr("Key backspace\n");
 				break;
-			case KEY_DC:        // Delete key
+			case KEY_DC:
+				addstr("Key delete\n");
 				break;
-			case KEY_ENTER:
-			case 10:
-				break;
-			case KEY_BTAB:
-			case KEY_CTAB:
-			case KEY_STAB:
-			case KEY_CATAB:
-			case 9:            // Tab key
+			case KEY_F(2):
+				addstr("Key F2\n");
 				break;
 			default:
-				cursor_.posx++;
+				break;
 		}
-	}
+		refresh();
+	} while (ch != KEY_F(1));
 }

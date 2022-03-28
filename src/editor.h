@@ -2,56 +2,30 @@
 #define EDITOR_H
 
 #include <ncurses.h>
+#include <string>
+#include <vector>
+#include <memory>
+
 #include "note.h"
 
-namespace fs = std::filesystem;
-using Lines = std::vector<std::string>;
-
-struct Cursor
-{
-	int posy;
-	int posx;
-
-	void update(int y, int x)
-	{
-		posy = y;
-		posx = x;
-	}
-};
-
-struct Textarea
-{
-	int height;
-	int width;
-
-	void update(int h, int w)
-	{
-		height = h;
-		width = w;
-	}
-};
+using str = std::string;
+using Content = std::vector<str>;
 
 class Editor
 {
-	public:
+  public:
 	Editor();
-	Editor(const Note& note);
+	Editor(const std::string& file);
+	Editor(std::shared_ptr<Note> note);
 	~Editor();
 
-	bool edstatus_
-
-	private:
-	Note note_;
-	Cursor cursor_;
-	Textarea textarea_;
-	std::string footer_;
+  private:
+	str file_;
+	Content content_;
+	std::shared_ptr<Note> note_;
 
 	void edinit();
-	void fresh();
-
-	void update_footer();
-
-	void edloop();
+	void main_loop();
 };
 
 #endif // EDITOR_H
